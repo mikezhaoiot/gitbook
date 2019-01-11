@@ -1,0 +1,58 @@
+
+### 第二章节
+
+----
+
+6.2 /dev management 看的不是很明白　
+
+------
+
+7. 配置别的组件　
+
+- busybox 
+
+如果已经有配置的busybox文件,可以通过BR2_PACKAGE_BUSYBOX_CONFIG指定路径,否则采用默认的package/busybox／busybox.config　
+
+使后续更改配置,使用busybox-menuconfig打开配置编辑。
+
+- Linux Kernel 
+
+同样的原理,如果有配置文件,可以通过BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG指定
+
+后续更改配置, 可通过make linux-menuconfig配置
+
+- U-Boot 
+
+同上，BR2_TARGET_UBOOT_USE_CUSTOM_CONFIG制定配置路径, 
+后续更改配置，可通过make barebox-menuconfig
+
+
+-----
+
+8.1 make tips 
+
+- make V=1 <target>
+显示执行的所有命令
+
+- make list-defconfigs 
+显示所有单板配置文件　
+
+-　make help 
+显示帮助信息
+
+- make clean 
+删除所有的构建信息,包括构建的目录(host,staging target)
+
+- make distclean 
+
+
+8.3 理解如何去编译包　
+
+ make <package>-dirclean 删除制定包　
+
+
+
+
+### 新知识
+
+Barebox 号称 uboot的升级版本　

@@ -1,0 +1,104 @@
+Connman 网络状态 : idle  association  configuration  ready  online 
+
+文章中详细描述了https://git.kernel.org/pub/scm/network/connman/connman.git/tree/doc/overview-api.txt 
+
+association : 试图建立一个(low-level connection)网络连接 
+
+configuration : 尝试配置ip服务 
+
+ready : 成功连接到设备, 没有默认路由 
+
+
+1. connmanctl state 获取的状态
+
+  State = online
+  OfflineMode = False
+  SessionMode = False
+
+2. scan wifi 扫描周围wifi,一般比较耗时,2s~3s左右  
+  Scan completed for wifi  //表示扫描成功 
+
+3. services  显示连接WiFi的信息/扫描的wifi 
+
+*AO NETGEAR_79           wifi_b0f1ec0b82f2_4e4554474541525f3739_managed_psk
+*A  Sugr                 wifi_b0f1ec0b82f2_53756772_managed_psk
+*A  Sugr_5G              wifi_b0f1ec0b82f2_537567725f3547_managed_psk
+    NETGEAR79            wifi_b0f1ec0b82f2_4e4554474541523739_managed_psk
+    Office speaker.o     wifi_b0f1ec0b82f2_4f666669636520737065616b65722e6f_managed_none
+    SZBP                 wifi_b0f1ec0b82f2_535a4250_managed_psk
+    Sewell               wifi_b0f1ec0b82f2_536577656c6c_managed_psk
+    Sugr_OfELbs          wifi_b0f1ec0b82f2_537567725f4f66454c6273_managed_none
+    xonz3                wifi_b0f1ec0b82f2_786f6e7a33_managed_psk
+                         wifi_b0f1ec0b82f2_hidden_managed_none
+    ChinaNet-JFuf        wifi_b0f1ec0b82f2_4368696e614e65742d4a467566_managed_psk
+    SEWELLIE             wifi_b0f1ec0b82f2_534557454c4c4945_managed_psk
+    Nursery-A785C20012   wifi_b0f1ec0b82f2_4e7572736572792d41373835433230303132_managed_none
+    ASUS                 wifi_b0f1ec0b82f2_41535553_managed_psk
+    YJZN-WIFI-001        wifi_b0f1ec0b82f2_594a5a4e2d574946492d303031_managed_psk
+    DIRECT-60-HP M130 LaserJet wifi_b0f1ec0b82f2_4449524543542d36302d4850204d313330204c617365724a6574_managed_psk
+    Eastech-RNoBASBl     wifi_b0f1ec0b82f2_456173746563682d524e6f424153426c_managed_psk
+    Sewell Shenzhen      wifi_b0f1ec0b82f2_536577656c6c205368656e7a68656e_managed_psk
+    5EWELLIE             wifi_b0f1ec0b82f2_354557454c4c4945_managed_psk
+    TP-LINK_2F42         wifi_b0f1ec0b82f2_54502d4c494e4b5f32463432_managed_psk
+    Austron-1            wifi_b0f1ec0b82f2_41757374726f6e2d31_managed_psk
+    ASUS_5G              wifi_b0f1ec0b82f2_415355535f3547_managed_psk
+    T900hqwaimao         wifi_b0f1ec0b82f2_5439303068717761696d616f_managed_psk
+    PPTECH-2.4G          wifi_b0f1ec0b82f2_5050544543482d322e3447_managed_psk
+                         wifi_b0f1ec0b82f2_hidden_managed_psk
+    TP-LINK_DE99         wifi_b0f1ec0b82f2_54502d4c494e4b5f44453939_managed_psk
+    Wired                gadget_b65a48c4eae5_usb
+
+观察可以发现规律: 
+ - * 表示 favorite
+ - A : autoconnect / O : online / R : Readly
+ - wifi信息: managed 表示AP模式,  psk:加密方式  none: 无密码, 此时不需要agent on 
+
+ 4. services wifi_b0f1ec0b82f2_4e4554474541525f3739_managed_psk 显示无线网路具体信息 
+
+/net/connman/service/wifi_b0f1ec0b82f2_4e4554474541525f3739_managed_psk
+  Type = wifi
+  Security = [ psk, wps ]
+  State = online
+  Strength = 86
+  Favorite = True
+  Immutable = False
+  AutoConnect = True
+  Name = NETGEAR_79
+  Ethernet = [ Method=auto, Interface=wlan0, Address=B0:F1:EC:0B:82:F2, MTU=1500 ]
+  IPv4 = [ Method=dhcp, Address=10.0.0.41, Netmask=255.255.255.0, Gateway=10.0.0.1 ]
+  IPv4.Configuration = [ Method=dhcp ]
+  IPv6 = [  ]
+  IPv6.Configuration = [ Method=auto, Privacy=disabled ]
+  Nameservers = [ 10.0.0.1 ]
+  Nameservers.Configuration = [  ]
+  Timeservers = [ 10.0.0.1 ]
+  Timeservers.Configuration = [  ]
+  Domains = [  ]
+  Domains.Configuration = [  ]
+  Proxy = [ Method=direct ]
+  Proxy.Configuration = [  ]
+  Provider = [  ]
+
+ 5. agent on  连接网络之前需要注册, 无密码的可以不需要 
+
+ 6. connect wifi_b0f1ec0b82f2_4e4554474541525f3739_managed_psk  提示输入密码
+
+ 7. move-before / move-after 更改wifi列表顺序 
+
+ 8. config <service> --autoconnect yes|no  是否自动连接 
+
+
+
+ ## 密码错误 
+
+- wifi-connman-manage -c Sugr_5G nicai 
+- 密码少于8位数, 大概2s左右,会返回　Error /net/connman/service/wifi_b0f1ec0b82f2_537567725f3547_managed_psk:  
+-  wifi-connman-manage -c Sugr_5G nicainicaii 
+- 密码大于8位数, 大概31s左右,会返回Error /net/connman/service/wifi_b0f1ec0b82f2_537567725f3547_managed_psk: Input/output error
+
+
+connection failed
+
+ 
+ 
+
