@@ -13,6 +13,15 @@
 |  http://buglist.sugrsugr.com       |   mikezhao   |   Sugr.123  | 禅道bug管理系统|
 
 
+-----------------------------
+
+自动化测试账号: acoustic-en-us@sugrsense.com  / SugrTestenus1 (一般不要使用)
+
+老化设备账号：　
+
+sugrtest1@sugrsense.com Sugr.12345
+sugrtest2@sugrsense.com Sugr140331 
+
 #### 设备登录密码
 
 ```shell
@@ -379,6 +388,9 @@ select * from sugrvoice;
 - 循环读取adb: while true; do sleep; adb shell; done
 
 
+#### 测试playback 声音标定
+
+- 采用声压级测量设备播放Prime Music (Happly) 分贝　: 64dB Ｃ  Fast 模式，　声压级与设备距离1m远, 平行测量
 
 #### 参考
 
@@ -387,3 +399,32 @@ select * from sugrvoice;
 
 
  arecord -Dhw:0,3 -d 5 -c 8 -r 16000 -f S16_LE /tmp/test.wav & gst-play-1.0 /usr/share/sense/testaudios/connected-fail.mp3 
+
+ /usr/bin/multi_wifi_load_driver station 1 
+
+echo "ctrl_interface=/var/run/wpa_supplicant
+update_config=1"> $WPA_CONFIG_NAME
+
+ctrl_interface=/var/run/wpa_supplicant
+update_config=1
+
+[   69.114020] EXT4-fs error (device mmcblk0p16): ext4_mb_generate_buddy:758: group 0, block bitmap and bg descriptor inconsistent: 4941 vs 4942 free clusters
+[   69.122640] EXT4-fs (mmcblk0p16): Delayed block allocation failed for inode 12 at logical offset 0 with max blocks 1 with error 28
+[   69.134387] EXT4-fs (mmcblk0p16): This should not happen!! Data will be lost
+\x000a
+[   69.143142] EXT4-fs (mmcblk0p16): Total free blocks count 0
+[   69.148779] EXT4-fs (mmcblk0p16): Free/Dirty block details
+[   69.154404] EXT4-fs (mmcblk0p16): free_blocks=1
+[   69.159048] EXT4-fs (mmcblk0p16): dirty_blocks=1
+[   69.163753] EXT4-fs (mmcblk0p16): Block reservation details
+[   69.169454] EXT4-fs (mmcblk0p16): i_reserved_data_blocks=1
+
+
+
+
+##### 版本号
+
+
+
+
+
